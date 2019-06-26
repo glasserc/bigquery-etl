@@ -15,18 +15,7 @@ CREATE TEMP FUNCTION
     LIMIT
       1 ));
 WITH
-  summary_addon_version AS (
-  SELECT
-    *,
-    udf_mode_last(ARRAY(
-      SELECT
-        element.version
-      FROM
-        UNNEST(active_addons.list)
-      WHERE
-        element.addon_id = 'followonsearch@mozilla.com')) AS addon_version
-  FROM
-    main_summary_v4 ),
+
   augmented AS (
   SELECT
     *,
@@ -64,7 +53,7 @@ WITH
       FROM
         UNNEST(scalar_parent_browser_search_with_ads.key_value) ) ) AS _searches
   FROM
-    summary_addon_version ),
+    main_summary_v4 ),
   flattened AS (
   SELECT
     *
@@ -93,7 +82,6 @@ WITH
     FIRST_VALUE(locale) OVER w1 AS locale,
     FIRST_VALUE(user_pref_browser_search_region) OVER w1 AS user_pref_browser_search_region,
     FIRST_VALUE(search_cohort) OVER w1 AS search_cohort,
-    FIRST_VALUE(addon_version) OVER w1 AS addon_version,
     FIRST_VALUE(os) OVER w1 AS os,
     FIRST_VALUE(os_version) OVER w1 AS os_version,
     FIRST_VALUE(channel) OVER w1 AS channel,
