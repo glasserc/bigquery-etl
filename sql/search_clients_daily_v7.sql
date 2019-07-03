@@ -97,48 +97,41 @@ WITH
     MAX(scalar_parent_browser_engagement_max_concurrent_tab_count) OVER w1 AS max_concurrent_tab_count_max,
     SUM(scalar_parent_browser_engagement_tab_open_event_count) OVER w1 AS tab_open_event_count_sum,
     SUM(active_ticks/(3600/5)) OVER w1 AS active_hours_sum,
-    NULLIF(SUM(
+    SUM(
       IF
         (type = 'organic',
           count,
-          0)) OVER w1,
-      0) AS organic,
-    NULLIF(SUM(
+          0)) OVER w1 AS organic,
+    SUM(
       IF
         (type = 'tagged-sap',
           count,
-          0)) OVER w1,
-      0) AS tagged_sap,
-    NULLIF(SUM(
+          0)) OVER w1 AS tagged_sap,
+    SUM(
       IF
         (type = 'tagged-follow-on',
           count,
-          0)) OVER w1,
-      0) AS tagged_follow_on,
-    NULLIF(SUM(
+          0)) OVER w1 AS tagged_follow_on,
+    SUM(
       IF
         (type = 'sap',
           count,
-          0)) OVER w1,
-      0) AS sap,
-    NULLIF(SUM(
+          0)) OVER w1 AS sap,
+    SUM(
       IF
         (type = 'ad-click',
           count,
-          0)) OVER w1,
-      0) AS ad_click,
-    NULLIF(SUM(
+          0)) OVER w1 AS ad_click,
+    SUM(
       IF
         (type = 'search-with-ads',
           count,
-          0)) OVER w1,
-      0) AS search_with_ads,
-    NULLIF(SUM(
+          0)) OVER w1 AS search_with_ads,
+    SUM(
       IF
         (type = 'unknown',
           count,
-          0)) OVER w1,
-      0) AS unknown
+          0)) OVER w1 AS unknown
   FROM
     flattened
   WHERE
